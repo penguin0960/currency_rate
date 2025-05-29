@@ -26,7 +26,6 @@ SECRET_KEY = "django-insecure-*rs%71++j+*@ci+3im-i@jruquw+uj=q6u+t609psl2h2b&2g9
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-# a
 
 # Application definition
 
@@ -122,3 +121,10 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+BOT_TOKEN = ''
+TELEGRAM_CHANNEL_ID = ''
+REMAINS_RUB = 2469
+
+from currency_rate.local_settings import *
