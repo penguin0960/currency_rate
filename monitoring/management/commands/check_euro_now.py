@@ -9,7 +9,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         price_today = get_anex_euro_course()
-        remains_rub = price_today * settings.REMAINS_RUB
+        remains_rub = price_today * settings.REMAINS_EURO
         url = "https://api.telegram.org/bot"
         url += settings.BOT_TOKEN
         method = url + "/sendMessage"

@@ -17,9 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from monitoring.views import check_euro_today
+from monitoring.views import check_euro_now
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", check_euro_today),
+    path("", check_euro_now),
 ]

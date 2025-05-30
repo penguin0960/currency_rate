@@ -103,7 +103,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "ru-ru"
 
 TIME_ZONE = "UTC"
 
@@ -125,6 +125,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 BOT_TOKEN = ''
 TELEGRAM_CHANNEL_ID = ''
-REMAINS_RUB = 2469
+REMAINS_EURO = 2469
 
 from currency_rate.local_settings import *
