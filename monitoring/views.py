@@ -1,23 +1,20 @@
-import datetime
-
 from django.conf import settings
 from django.shortcuts import render
 
+from monitoring.models import EuroCourse
 from monitoring.selectors import get_anex_euro_course_by_dates
+from monitoring.telegram import notify_about_euro_course
 
 
 def check_euro_now(request):
-    euro_by_date = get_anex_euro_course_by_dates()
-    # euro_by_date = {datetime.date(2025, 5, 31): 95.05, datetime.date(2025, 5, 29): 96.21, datetime.date(2025, 5, 30): 94.73}
-    euro_on_nearest_dates = [
-        {
-            'date': euro_in_day[0],
-            'price': euro_in_day[1],
-            'remains_rubs': round(euro_in_day[1] * settings.REMAINS_EURO),
-        }
-        for euro_in_day in euro_by_date.items()
-    ]
-    euro_on_nearest_dates.sort(key=lambda x: x['date'], reverse=True)
+    price_by_date = get_anex_euro_course_by_dates()
+    euro_on_nearest_dates = []
+    for date, price in sorted(price_by_date.items(), key=lambda x: x[0], reverse=True):
+        euro_course, created = EuroCourse.objects.get_or_create(date=date, price=price)
+        euro_on_nearest_dates.append(euro_course)
+        if created:
+            notify_about_euro_course(euro_course)
+
     return render(
         request,
         'monitoring/check_euro_today.html',

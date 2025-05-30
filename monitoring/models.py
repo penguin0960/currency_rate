@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 
@@ -15,3 +16,7 @@ class EuroCourse(models.Model):
 
     def __str__(self):
         return f'{self.date} - {self.price} руб.'
+
+    @property
+    def remain_rubs(self) -> float:
+        return self.price * settings.REMAINS_EURO

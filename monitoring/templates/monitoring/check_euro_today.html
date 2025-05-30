@@ -7,10 +7,10 @@
   </head>
   <body class="bg-dark text-light">
   <div class="d-flex flex-column justify-content-center align-items-center h-100">
-      {% for euro_in_day in euro_on_nearest_dates %}
+      {% for euro_course in euro_on_nearest_dates %}
       <div class="m-5 border border-2 p-4">
-          <p>Курс евро на {{ euro_in_day.date }}: {{ euro_in_day.price }} руб.</p>
-          <p>Осталось внести: {{ euro_in_day.remains_rubs }} руб.</p>
+          <p>Курс евро на {{ euro_course.date }}: {{ euro_course.price }} руб.</p>
+          <p>Осталось внести: {{ euro_course.remain_rubs|floatformat:"0" }} руб.</p>
       </div>
       {% endfor %}
   </div>
