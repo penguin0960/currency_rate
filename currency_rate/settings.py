@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import datetime
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -125,6 +125,14 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 BOT_TOKEN = ''
 TELEGRAM_CHANNEL_ID = ''
+FULL_PRICE_EURO = 3091
+DEPOSITED_EURO = 622
+DEPOSITED_RUBS = 60000
 REMAINS_EURO = 2469
+
+LAST_DAY_FOR_PAYMENT = datetime.date(2025, 8, 14)
+DEPARTURE_DATE = datetime.date(2025, 9, 3)
+
+
 
 from currency_rate.local_settings import *
