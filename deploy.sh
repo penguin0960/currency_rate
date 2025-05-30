@@ -1,4 +1,6 @@
 #!/bin/bash
+git fetch
+git reset --hard
 git pull
 ./venv/bin/pip install -r ./requirements.txt
 ./venv/bin/python3 ./manage.py migrate
