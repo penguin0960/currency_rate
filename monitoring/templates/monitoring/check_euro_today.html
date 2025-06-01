@@ -37,7 +37,7 @@
             <p>До вылета осталось {{ days_before_departure }} дней</p>
             <h5>Оплата</h5>
             <p>Оплачено: {{ deposited_rubs }} руб. ({{ deposited_euro }} евро)</p>
-            <p>Осталось внести {{ remains_euro }} евро. По сегодняшнему курсу: {{ today_euro_course.remain_rubs }} руб.</p>
+            <p>Осталось внести {{ remains_euro }} евро. По сегодняшнему курсу: {{ today_euro_course.remain_rubs|floatformat:"0" }} руб.</p>
             <div class="progress" role="progressbar" aria-valuenow="{{ money_progress_percent }}" aria-valuemin="0" aria-valuemax="100">
               <div class="progress-bar" style="width: {{ money_progress_percent }}%">{{ money_progress_percent }}%</div>
             </div>
