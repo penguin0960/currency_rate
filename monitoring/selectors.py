@@ -28,7 +28,7 @@ def get_soup_from_tour_kassa() -> BeautifulSoup:
     return BeautifulSoup(r.content.decode(), features='html.parser')
 
 
-def get_table_soups_by_date_from_tour_kassa():
+def deprecated_get_table_soups_by_date_from_tour_kassa():
     soup = get_soup_from_tour_kassa()
     course_tables = soup.find_all('table', attrs={'class': 'mod_rate_day'})
     course_tables += soup.find_all('table', attrs={'class': 'mod_rate_today'})
@@ -42,9 +42,9 @@ def get_table_soups_by_date_from_tour_kassa():
     return result
 
 
-def get_anex_euro_course_by_dates() -> dict[datetime.date, float]:
+def deprecated_get_anex_euro_course_by_dates() -> dict[datetime.date, float]:
     result = {}
-    for date, table in get_table_soups_by_date_from_tour_kassa().items():
+    for date, table in deprecated_get_table_soups_by_date_from_tour_kassa().items():
         anex_elem = table.find(lambda x: x.attrs.get('class') == ['mod_rate_oper'] and 'Анекс' in x.text)
         price_today = float(anex_elem.find_next('td').text)
         result[date] = price_today
@@ -52,8 +52,46 @@ def get_anex_euro_course_by_dates() -> dict[datetime.date, float]:
     return result
 
 
-def get_anex_euro_course():
+def deprecated_get_anex_euro_course():
     soup = get_soup_from_tour_kassa()
     anex_elem = soup.find(lambda x: x.attrs.get('class') == ['mod_rate_oper'] and 'Анекс' in x.text)
     price_today = float(anex_elem.find_next('td').text)
     return price_today
+
+
+class TourKassaParser:
+
+    def __init__(self):
+        self.soup = None
+
+    def parse(self):
+        self.soup = get_soup_from_tour_kassa()
+
+    def get_table_soups_by_date_from_tour_kassa(self):
+        course_tables = self.soup.find_all('table', attrs={'class': 'mod_rate_day'})
+        course_tables += self.soup.find_all('table', attrs={'class': 'mod_rate_today'})
+        result = {}
+        for table in course_tables:
+            table_header = table.find(lambda x: x.name == 'i' and 'Курсы валют туроператоров' in x.text)
+            object_with_date = table_header.find_next(string=re.compile(r'\d\d\.\d\d\.\d\d'))
+            table_date = datetime.datetime.strptime(object_with_date.text[-8:], '%d.%m.%y').date()
+            result[table_date] = table
+
+        return result
+
+    def get_anex_euro_course_by_dates(self) -> dict[datetime.date, float]:
+        result = {}
+        for date, table in self.get_table_soups_by_date_from_tour_kassa().items():
+            anex_elem = table.find(lambda x: x.attrs.get('class') == ['mod_rate_oper'] and 'Анекс' in x.text)
+            price_today = float(anex_elem.find_next('td').text)
+            result[date] = price_today
+
+        return result
+
+    def get_euro_forecast_with_date(self) -> tuple[datetime.date, str]:
+        table = self.soup.find('table', attrs={'class': 'mod_rate_'})
+        table_header = table.find(lambda x: x.name == 'i' and 'Прогноз курсов валют ЦБ РФ' in x.text)
+        object_with_date = table_header.find_next(string=re.compile(r'\d\d\.\d\d\.\d\d'))
+        table_date = datetime.datetime.strptime(object_with_date.text[-8:], '%d.%m.%y').date()
+        forecast = table.find(lambda x: x.name == 'div' and x.attrs.get('class') == ['glabel'] and x.text == 'EUR').find_next('div').text
+        return table_date, forecast
