@@ -1,3 +1,5 @@
+import datetime
+
 import requests
 from django.conf import settings
 
@@ -13,6 +15,7 @@ def send_message_in_telegram(message: str):
         data={
             "chat_id": settings.TELEGRAM_CHANNEL_ID,
             "text": message,
+            'disable_notification': datetime.datetime.now().hour in (22, 23, 0, 1, 2, 3, 4, 5, 6, 7, 8)
         },
     )
 
