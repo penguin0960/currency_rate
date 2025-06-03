@@ -13,7 +13,7 @@ def check_euro_now(request):
         request,
         'monitoring/check_euro_today.html',
         context={
-            'euro_on_nearest_dates': EuroCourse.objects.order_by('-date')[:5],
+            'euro_on_nearest_dates': EuroCourse.objects.order_by('-date')[:10],
             'today_euro_course': today_course,
             'remains_euro': settings.REMAINS_EURO,
             'deposited_euro': settings.DEPOSITED_EURO,
