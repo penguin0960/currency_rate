@@ -19,6 +19,6 @@ class Command(BaseCommand):
                 notify_about_euro_course(euro_course)
 
         date, forecast = parser.get_euro_forecast_with_date()
-        actual_forecast = EuroForecast.objects.filter(date=datetime.date.today()).order_by('-dt_created').first()
+        actual_forecast = EuroForecast.objects.filter(date=date).order_by('-dt_created').first()
         if not actual_forecast or actual_forecast.forecast != forecast:
-            notify_about_euro_forecast(EuroForecast.objects.create(date=datetime.date.today(), forecast=forecast))
+            notify_about_euro_forecast(EuroForecast.objects.create(date=date, forecast=forecast))
